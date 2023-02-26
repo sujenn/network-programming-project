@@ -1,0 +1,43 @@
+
+1: navigera till direktoriet för derby:
+	..../db-derby-10.14.2.0-bin/bin
+
+2: Starta serververktyg. Öppna terminalfönster i detta direktorie kör shellscript för att starta server
+	./startNetworkServer
+ låt fönstret vara öppet men gör inget mer. Det går inte att skapa en koppling till databasen i NetBeans om detta skript inte är igång.
+
+3: hitta installationssökvägen för java 8. öppna ett nytt terminalfönster i godtyckligt direktorie, skriv in
+	/usr/libexec/java_home -v 1.8
+
+	kopiera det som skrivs ut (något i stil med /Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home)
+
+4: Sätt java-homevariabeln. Öppna ett nytt terminalfönster i samma ..../db-derby-10.14.2.0-bin/bin. Sätt variabeln för JAVA_HOME och starta hjkälpverktyget ij
+	export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home"
+testa med echo $JAVA_HOME. Javahem-filsökvägen ska skrivas ut.
+	
+5. Starta ij:
+	./ij
+
+6: Skapa den nya databasen "project" med användaren "admin" och lösenord "admin". Det ska stå "ij> " i terminalfönstret.
+	CONNECT 'jdbc:derby:project;create=true;user=admin;password=admin';
+(om databasen redan har skapats):
+	CONNECT 'jdbc:derby:project;user=admin;password=admin';
+
+7. Kopiera in SQL-kod för att skapa och fylla tabellerna. Öppna sql-fil och kopiera, klistra in i ij-fönstret. Tryck Enter för att köra.
+
+8. Stäng ij.
+	disconnect
+	exit
+
+9: Skapa databaskoppling i NetBeans. Under fliken Services, högerklicka på "Databases"
+	New Connection Driver steg 1:
+		Driver: Java  DB (Network)
+		Driver File(s): ska vara filsökväg till derbyclient.jar
+	New Connection Driver steg 2:
+		host:	localhost
+		port: 	1527
+		database: 	project
+		username:	admin
+		password:	admin
+		(kryssa i remember password)
+	tryck på "Finish"
